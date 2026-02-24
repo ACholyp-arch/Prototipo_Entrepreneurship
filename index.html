@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Retención Gen Z — MVP</title>
+  <meta name="description" content="MVP: Servicios y talleres para reducir la rotación de personal operativo Generación Z. Agendar diagnóstico, solicitar reunión y recibir análisis." />
+  <!-- Fuente confiable -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">RZ</div>
+        <div>
+          <h1>Retención Gen Z — MVP</h1>
+          <p class="lead">Validación de mercado para talleres y diagnósticos que reducen la rotación operativa del talento joven.</p>
+        </div>
+      </div>
+      <nav class="contact">hola@retencion-genz.test</nav>
+    </header>
+
+    <main class="grid">
+      <section class="card hero">
+        <div>
+          <h2>Reduce la rotación de talento operativo de la Generación Z</h2>
+          <p class="lead">Talleres prácticos (liderazgo, claridad de roles, comunicación) + diagnósticos. No venta directa — buscamos validar interés.</p>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn btn-primary" data-action="diagnostico">Agendar tu diagnóstico</button>
+          <button class="btn btn-outline" data-action="reunion">Solicitar una reunión</button>
+          <button class="btn btn-outline" data-action="analisis">Recibir un análisis</button>
+        </div>
+
+        <div class="value-list">
+          <div class="value-item"><span class="dot"></span>
+            <div><strong>Qué ofrecemos</strong><div class="small">Talleres, diagnósticos y recomendaciones prácticas.</div></div>
+          </div>
+          <div class="value-item"><span class="dot"></span>
+            <div><strong>Objetivo</strong><div class="small">Validar interés con métricas reales (registros, solicitudes, conversión).</div></div>
+          </div>
+          <div class="value-item"><span class="dot"></span>
+            <div><strong>Beneficios</strong><div class="small">Menor costo de reemplazo, más estabilidad y permanencia entre 6–12 meses.</div></div>
+          </div>
+        </div>
+
+        <h3>Talleres destacados</h3>
+        <div class="workshops">
+          <div class="ws"><strong>Liderazgo operativo</strong><div class="small">Mejor engagement para gestores jóvenes.</div></div>
+          <div class="ws"><strong>Claridad de roles</strong><div class="small">Expectativas claras, menos rotación.</div></div>
+          <div class="ws"><strong>Comunicación efectiva</strong><div class="small">Feedback práctico y reuniones productivas.</div></div>
+          <div class="ws"><strong>Onboarding adaptado</strong><div class="small">Mejor primera experiencia laboral.</div></div>
+        </div>
+
+        <footer class="footer">
+          <div class="hint">Buscamos validar demanda con datos medibles — no ventas agresivas.</div>
+          <div class="kpi-badges">
+            <div class="badge">Empresas: <span id="count-emp">0</span></div>
+            <div class="badge">Solicitudes: <span id="count-solicitudes">0</span></div>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="card metrics">
+        <div>
+          <h3>Métricas (MVP)</h3>
+          <p class="small">Integra con Google Analytics / Zapier para obtener visitas reales. Este MVP guarda localmente para pruebas.</p>
+        </div>
+
+        <div class="metric">
+          <div>
+            <div class="small">Número de empresas registradas</div>
+            <strong id="metric-emp">0</strong>
+          </div>
+          <div class="small">Meta: 20</div>
+        </div>
+
+        <div class="metric">
+          <div>
+            <div class="small">Solicitudes de reunión</div>
+            <strong id="metric-solic">0</strong>
+          </div>
+          <div class="small">Meta: 15</div>
+        </div>
+
+        <div class="metric">
+          <div>
+            <div class="small">Tasa de conversión</div>
+            <strong id="metric-conv">0%</strong>
+          </div>
+          <div class="small">(Solicitudes / visitas)</div>
+        </div>
+
+        <div style="margin-top:12px">
+          <h4>Acciones rápidas</h4>
+          <button class="btn btn-primary" id="demo-increment">Simular registro</button>
+          <button class="btn btn-outline" id="demo-solic">Simular solicitud</button>
+        </div>
+
+        <div class="integrations">Integraciones sugeridas: Google Forms, Typeform, Zapier (webhooks).</div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Formulario de contacto</h3>
+      <p class="small">Rellena los datos y coordinamos el diagnóstico o reunión.</p>
+      <form id="contactForm" novalidate>
+        <input type="hidden" name="intent" id="formIntent" value="contacto">
+        <div class="field">
+          <label for="company">Empresa</label>
+          <input id="company" name="company" placeholder="Nombre de la empresa" required>
+        </div>
+        <div class="field">
+          <label for="name">Nombre y cargo</label>
+          <input id="name" name="name" placeholder="Ej: Laura Pérez - Jefa de RRHH" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" placeholder="correo@empresa.com" type="email" required>
+        </div>
+        <div class="field">
+          <label for="notes">Comentarios / objetivos</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Breve descripción de la situación"></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="closeModal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+        </div>
+
+        <p class="small note">Al enviar, guardaremos la información para medir interés. No se practicará venta agresiva.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
