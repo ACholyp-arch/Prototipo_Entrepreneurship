@@ -4,13 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Retención Gen Z — MVP</title>
-  <meta name="description" content="MVP: Servicios y talleres para reducir la rotación de personal operativo Generación Z. Agendar diagnóstico, solicitar reunión y recibir análisis." />
-  <!-- Fuente confiable -->
+  <meta name="description" content="MVP: Servicios y talleres para reducir la rotación de personal operativo Generación Z." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
+  <!-- Bienvenida (pantalla inicial) -->
+  <div id="welcome" class="welcome-screen" role="dialog" aria-modal="true">
+    <div class="welcome-card">
+      <h1>Bienvenido a Retención Gen Z</h1>
+      <p class="muted">Validación de mercado — soluciones para reducir la rotación operativa del talento joven.</p>
+      <div class="welcome-actions">
+        <button id="btnEnter" class="btn btn-primary">Iniciar sesión</button>
+      </div>
+      <small class="muted">Presiona "Iniciar sesión" para continuar al prototipo.</small>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div id="app" class="container" hidden>
     <header class="header">
       <div class="brand">
         <div class="logo">RZ</div>
@@ -19,97 +31,120 @@
           <p class="lead">Validación de mercado para talleres y diagnósticos que reducen la rotación operativa del talento joven.</p>
         </div>
       </div>
-      <nav class="contact">hola@retencion-genz.test</nav>
+      <nav class="tabs" role="tablist" aria-label="Secciones">
+        <button class="tab active" data-tab="home" role="tab" aria-selected="true">Inicio</button>
+        <button class="tab" data-tab="quienes" role="tab">¿Quiénes somos?</button>
+        <button class="tab" data-tab="beneficios" role="tab">Beneficios</button>
+        <button class="tab" data-tab="objetivo" role="tab">Objetivo</button>
+        <button class="tab" data-tab="info" role="tab">Información</button>
+      </nav>
     </header>
 
-    <main class="grid">
-      <section class="card hero">
-        <div>
+    <main>
+      <!-- HOME (pestaña principal) -->
+      <section id="home" class="tab-panel">
+        <div class="card hero">
           <h2>Reduce la rotación de talento operativo de la Generación Z</h2>
           <p class="lead">Talleres prácticos (liderazgo, claridad de roles, comunicación) + diagnósticos. No venta directa — buscamos validar interés.</p>
-        </div>
 
-        <div class="cta-row">
-          <button class="btn btn-primary" data-action="diagnostico">Agendar tu diagnóstico</button>
-          <button class="btn btn-outline" data-action="reunion">Solicitar una reunión</button>
-          <button class="btn btn-outline" data-action="analisis">Recibir un análisis</button>
-        </div>
+          <div class="cta-row">
+            <button class="btn btn-primary" data-action="diagnostico">Agendar tu diagnóstico</button>
+            <button class="btn btn-outline" data-action="reunion">Solicitar una reunión</button>
+            <button class="btn btn-outline" data-action="analisis">Recibir un análisis</button>
+          </div>
 
-        <div class="value-list">
-          <div class="value-item"><span class="dot"></span>
-            <div><strong>Qué ofrecemos</strong><div class="small">Talleres, diagnósticos y recomendaciones prácticas.</div></div>
+          <div class="value-list">
+            <div class="value-item"><span class="dot"></span>
+              <div><strong>Qué ofrecemos</strong><div class="small">Talleres, diagnósticos y recomendaciones prácticas.</div></div>
+            </div>
+            <div class="value-item"><span class="dot"></span>
+              <div><strong>Objetivo</strong><div class="small">Validar interés con métricas reales (registros, solicitudes, conversión).</div></div>
+            </div>
+            <div class="value-item"><span class="dot"></span>
+              <div><strong>Beneficios</strong><div class="small">Menor costo de reemplazo, más estabilidad y permanencia entre 6–12 meses.</div></div>
+            </div>
           </div>
-          <div class="value-item"><span class="dot"></span>
-            <div><strong>Objetivo</strong><div class="small">Validar interés con métricas reales (registros, solicitudes, conversión).</div></div>
-          </div>
-          <div class="value-item"><span class="dot"></span>
-            <div><strong>Beneficios</strong><div class="small">Menor costo de reemplazo, más estabilidad y permanencia entre 6–12 meses.</div></div>
-          </div>
-        </div>
 
-        <h3>Talleres destacados</h3>
-        <div class="workshops">
-          <div class="ws"><strong>Liderazgo operativo</strong><div class="small">Mejor engagement para gestores jóvenes.</div></div>
-          <div class="ws"><strong>Claridad de roles</strong><div class="small">Expectativas claras, menos rotación.</div></div>
-          <div class="ws"><strong>Comunicación efectiva</strong><div class="small">Feedback práctico y reuniones productivas.</div></div>
-          <div class="ws"><strong>Onboarding adaptado</strong><div class="small">Mejor primera experiencia laboral.</div></div>
-        </div>
-
-        <footer class="footer">
-          <div class="hint">Buscamos validar demanda con datos medibles — no ventas agresivas.</div>
-          <div class="kpi-badges">
-            <div class="badge">Empresas: <span id="count-emp">0</span></div>
-            <div class="badge">Solicitudes: <span id="count-solicitudes">0</span></div>
+          <h3>Talleres destacados</h3>
+          <div class="workshops">
+            <div class="ws"><strong>Liderazgo operativo</strong><div class="small">Mejor engagement para gestores jóvenes.</div></div>
+            <div class="ws"><strong>Claridad de roles</strong><div class="small">Expectativas claras, menos rotación.</div></div>
+            <div class="ws"><strong>Comunicación efectiva</strong><div class="small">Feedback práctico y reuniones productivas.</div></div>
+            <div class="ws"><strong>Onboarding adaptado</strong><div class="small">Mejor primera experiencia laboral.</div></div>
           </div>
-        </footer>
+
+          <footer class="footer">
+            <div class="hint muted">Buscamos validar demanda con datos medibles — no ventas agresivas.</div>
+          </footer>
+        </div>
       </section>
 
-      <aside class="card metrics">
-        <div>
-          <h3>Métricas (MVP)</h3>
-          <p class="small">Integra con Google Analytics / Zapier para obtener visitas reales. Este MVP guarda localmente para pruebas.</p>
+      <!-- ¿Quiénes somos? -->
+      <section id="quienes" class="tab-panel" hidden>
+        <div class="card">
+          <h2>¿Quiénes somos?</h2>
+          <p class="small">Equipo enfocado en retención de talento operativo joven. Creamos talleres y diagnósticos prácticos para reducir rotación y mejorar la experiencia laboral.</p>
         </div>
+      </section>
 
-        <div class="metric">
-          <div>
-            <div class="small">Número de empresas registradas</div>
-            <strong id="metric-emp">0</strong>
-          </div>
-          <div class="small">Meta: 20</div>
+      <!-- Beneficios -->
+      <section id="beneficios" class="tab-panel" hidden>
+        <div class="card">
+          <h2>Beneficios</h2>
+          <ul class="small">
+            <li>Reducción de costos y tiempo por reemplazo.</li>
+            <li>Mayor estabilidad operativa y productividad.</li>
+            <li>Mejor permanencia (6–12 meses).</li>
+          </ul>
         </div>
+      </section>
 
-        <div class="metric">
-          <div>
-            <div class="small">Solicitudes de reunión</div>
-            <strong id="metric-solic">0</strong>
-          </div>
-          <div class="small">Meta: 15</div>
+      <!-- Objetivo -->
+      <section id="objetivo" class="tab-panel" hidden>
+        <div class="card">
+          <h2>Objetivo</h2>
+          <p class="small">Validar interés de mercado y medir intención de contacto mediante registros y solicitudes. No se trata de ventas inmediatas, sino de validar demanda.</p>
         </div>
+      </section>
 
-        <div class="metric">
-          <div>
-            <div class="small">Tasa de conversión</div>
-            <strong id="metric-conv">0%</strong>
-          </div>
-          <div class="small">(Solicitudes / visitas)</div>
+      <!-- Información -->
+      <section id="info" class="tab-panel" hidden>
+        <div class="card">
+          <h2>Información</h2>
+          <p class="small">Para consultas: <strong>hola@retencion-genz.test</strong>. Integramos con webhooks (Zapier/Make) para capturar leads y flujos simples de trabajo.</p>
         </div>
-
-        <div style="margin-top:12px">
-          <h4>Acciones rápidas</h4>
-          <button class="btn btn-primary" id="demo-increment">Simular registro</button>
-          <button class="btn btn-outline" id="demo-solic">Simular solicitud</button>
-        </div>
-
-        <div class="integrations">Integraciones sugeridas: Google Forms, Typeform, Zapier (webhooks).</div>
-      </aside>
+      </section>
     </main>
   </div>
 
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modal" aria-hidden="true">
+  <!-- Modal de login (aparece al presionar Iniciar sesión desde la bienvenida) -->
+  <div class="modal-backdrop" id="loginModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <h3 id="loginTitle">Iniciar sesión</h3>
+      <p class="small muted">Accede para gestionar solicitudes (prototipo simple).</p>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="userEmail">Email</label>
+          <input id="userEmail" name="email" type="email" placeholder="correo@empresa.com" required>
+        </div>
+        <div class="field">
+          <label for="userPass">Contraseña</label>
+          <input id="userPass" name="password" type="password" placeholder="********" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="closeLogin">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+      </form>
+      <p class="small muted note">Este login es parte del prototipo (no crea usuarios reales).</p>
+    </div>
+  </div>
+
+  <!-- Modal de contacto (para CTA) -->
+  <div class="modal-backdrop" id="contactModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <h3 id="modalTitle">Formulario de contacto</h3>
-      <p class="small">Rellena los datos y coordinamos el diagnóstico o reunión.</p>
+      <p class="small muted">Rellena los datos y coordinamos el diagnóstico o reunión.</p>
       <form id="contactForm" novalidate>
         <input type="hidden" name="intent" id="formIntent" value="contacto">
         <div class="field">
@@ -130,11 +165,10 @@
         </div>
 
         <div class="modal-actions">
-          <button type="button" class="btn btn-outline" id="closeModal">Cerrar</button>
+          <button type="button" class="btn btn-outline" id="closeContact">Cerrar</button>
           <button type="submit" class="btn btn-primary">Enviar solicitud</button>
         </div>
-
-        <p class="small note">Al enviar, guardaremos la información para medir interés. No se practicará venta agresiva.</p>
+        <p class="small muted note">Al enviar, guardaremos la información para medir interés. No se practicará venta agresiva.</p>
       </form>
     </div>
   </div>
