@@ -1,87 +1,93 @@
 // app.js
-// Reemplaza la siguiente URL por la de tu webhook (Zapier / Make / tu endpoint)
+// REEMPLAZA la URL por tu webhook real (Zapier / Make / backend)
 const WEBHOOK_URL = 'https://hooks.example.com/your-webhook-url';
 
-// UI elements
-const modal = document.getElementById('modal');
-const form = document.getElementById('contactForm');
-const actions = document.querySelectorAll('[data-action]');
-const closeBtn = document.getElementById('closeModal');
+// Basic UI refs
+const welcome = document.getElementById('welcome');
+const btnEnter = document.getElementById('btnEnter');
+const app = document.getElementById('app');
 
-const STORAGE_KEY = 'rz_mvp_metrics_v1';
-const defaultMetrics = { empresas: 0, solicitudes: 0, visitas: 120 };
+const loginModal = document.getElementById('loginModal');
+const loginForm = document.getElementById('loginForm');
+const closeLogin = document.getElementById('closeLogin');
 
-// --- Modal controls ---
-function openModal(intent) {
-  form.dataset.intent = intent || 'contacto';
-  document.getElementById('formIntent').value = intent || 'contacto';
+const contactModal = document.getElementById('contactModal');
+const contactForm = document.getElementById('contactForm');
+const closeContact = document.getElementById('closeContact');
+
+const tabs = document.querySelectorAll('.tab');
+const tabPanels = document.querySelectorAll('.tab-panel');
+const ctaButtons = document.querySelectorAll('[data-action]');
+
+// Mostrar el app y abrir modal de login cuando presionan "Iniciar sesión"
+btnEnter.addEventListener('click', () => {
+  // ocultar bienvenida y mostrar app
+  welcome.style.display = 'none';
+  app.hidden = false;
+  // abrir modal de login
+  openModal(loginModal);
+  document.getElementById('userEmail').focus();
+});
+
+// Funciones para modales
+function openModal(modal) {
   modal.style.display = 'flex';
   modal.setAttribute('aria-hidden', 'false');
-  document.getElementById('company').focus();
 }
-function closeModalFn() {
+function closeModal(modal) {
   modal.style.display = 'none';
   modal.setAttribute('aria-hidden', 'true');
 }
 
-// Add click handlers to CTA buttons
-actions.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    const act = e.currentTarget.dataset.action;
-    openModal(act);
+// Login modal controls
+closeLogin.addEventListener('click', () => closeModal(loginModal));
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // Prototipo: no autenticación real. Cerrar modal.
+  alert('Logged in (prototipo). Ahora puedes usar la landing.');
+  closeModal(loginModal);
+  loginForm.reset();
+});
+
+// Tab switching
+tabs.forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    const target = e.currentTarget.dataset.tab;
+    // toggle active class
+    tabs.forEach(t => t.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    // show/hide panels
+    tabPanels.forEach(p => {
+      if (p.id === target) p.hidden = false;
+      else p.hidden = true;
+    });
   });
 });
 
-closeBtn.addEventListener('click', closeModalFn);
-modal.addEventListener('click', (e) => { if (e.target === modal) closeModalFn(); });
-
-// --- Metrics localStorage helpers ---
-function loadMetrics() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { ...defaultMetrics };
-  } catch (e) {
-    return { ...defaultMetrics };
-  }
-}
-function saveMetrics(m) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(m));
-  updateUI(m);
-}
-function updateUI(m) {
-  document.getElementById('count-emp').textContent = m.empresas;
-  document.getElementById('count-solicitudes').textContent = m.solicitudes;
-  document.getElementById('metric-emp').textContent = m.empresas;
-  document.getElementById('metric-solic').textContent = m.solicitudes;
-  const conv = m.visitas > 0 ? ((m.solicitudes / m.visitas) * 100).toFixed(1) : 0;
-  document.getElementById('metric-conv').textContent = conv + '%';
-}
-
-// Demo simulate buttons
-document.getElementById('demo-increment').addEventListener('click', () => {
-  const m = loadMetrics();
-  m.empresas += 1;
-  saveMetrics(m);
-});
-document.getElementById('demo-solic').addEventListener('click', () => {
-  const m = loadMetrics();
-  m.solicitudes += 1;
-  saveMetrics(m);
+// CTA buttons open contact modal and set intent
+ctaButtons.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const intent = e.currentTarget.dataset.action || 'contacto';
+    document.getElementById('formIntent').value = intent;
+    openModal(contactModal);
+    document.getElementById('company').focus();
+  });
 });
 
-// --- Webhook submit helper ---
+closeContact.addEventListener('click', () => closeModal(contactModal));
+contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(contactModal); });
+
+// Webhook submit function
 async function postToWebhook(payload) {
   if (!WEBHOOK_URL || WEBHOOK_URL.includes('example.com')) {
-    // For safety: don't attempt real request if webhook not set
-    console.warn('Webhook no configurado. Reemplaza WEBHOOK_URL en app.js con tu URL.');
+    console.warn('Webhook no configurado. Sustituye WEBHOOK_URL en app.js por la URL real.');
     return { ok: false, message: 'Webhook no configurado (placeholder).' };
   }
-
   try {
     const res = await fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
     if (!res.ok) {
       const text = await res.text();
@@ -93,48 +99,36 @@ async function postToWebhook(payload) {
   }
 }
 
-// --- Form submit ---
-form.addEventListener('submit', async (e) => {
+// Contact form submit
+contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  // simple validation
-  const company = form.company.value.trim();
-  const name = form.name.value.trim();
-  const email = form.email.value.trim();
+  const company = contactForm.company.value.trim();
+  const name = contactForm.name.value.trim();
+  const email = contactForm.email.value.trim();
   if (!company || !name || !email) {
-    alert('Por favor completa los campos obligatorios: Empresa, Nombre y Email.');
+    alert('Completa Empresa, Nombre y Email.');
     return;
   }
 
   const payload = {
-    intent: form.dataset.intent || 'contacto',
+    intent: contactForm.intent.value || contactForm.dataset.intent || 'contacto',
     company,
     name,
     email,
-    notes: form.notes.value || '',
+    notes: contactForm.notes.value || '',
     ts: new Date().toISOString(),
-    source: 'Landing MVP - Retención Gen Z',
+    source: 'Landing MVP - Retención Gen Z'
   };
 
-  // update local metrics (MVP behavior)
-  const m = loadMetrics();
-  m.empresas += 1;
-  m.solicitudes += 1;
-  saveMetrics(m);
-
-  // Try to send to webhook (non-blocking behaviour but we await so user sees result)
+  // Intent: enviar al webhook
   const result = await postToWebhook(payload);
 
+  // cerrar modal y notificar usuario (si falla, igualmente el envío local se puede manejar en backend)
+  closeModal(contactModal);
   if (result.ok) {
-    closeModalFn();
-    alert('Gracias — solicitud registrada y enviada. Nos contactaremos pronto.');
-    form.reset();
+    alert('Gracias — solicitud enviada. Nos contactaremos pronto.');
   } else {
-    // If webhook fails, still keep the local record and inform user
-    closeModalFn();
     alert('Solicitud registrada localmente. No se pudo enviar al webhook: ' + (result.message || result.error || result.text || 'Error desconocido') + '\n\nRevisa la configuración del webhook.');
-    form.reset();
   }
+  contactForm.reset();
 });
-
-// --- Init UI ---
-updateUI(loadMetrics());
